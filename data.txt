@@ -1,0 +1,92 @@
+[
+  {
+    "empId": 101,
+    "name": "Amit",
+    "department": "IT",
+    "salary": 45000,
+    "age": 25,
+    "city": "Mumbai",
+    "isActive": true
+  },
+  {
+    "empId": 102,
+    "name": "Priya",
+    "department": "HR",
+    "salary": 35000,
+    "age": 28,
+    "city": "Pune",
+    "isActive": true
+  },
+  {
+    "empId": 103,
+    "name": "Rahul",
+    "department": "IT",
+    "salary": 60000,
+    "age": 30,
+    "city": "Mumbai",
+    "isActive": true
+  },
+  {
+    "empId": 104,
+    "name": "Sneha",
+    "department": "Finance",
+    "salary": 50000,
+    "age": 27,
+    "city": "Nashik",
+    "isActive": false
+  },
+  {
+    "empId": 105,
+    "name": "Vijay",
+    "department": "IT",
+    "salary": 75000,
+    "age": 35,
+    "city": "Pune",
+    "isActive": true
+  },
+  {
+    "empId": 106,
+    "name": "Neha",
+    "department": "HR",
+    "salary": 40000,
+    "age": 24,
+    "city": "Mumbai",
+    "isActive": true
+  },
+  {
+    "empId": 107,
+    "name": "Karan",
+    "department": "Sales",
+    "salary": 30000,
+    "age": 26,
+    "city": "Thane",
+    "isActive": false
+  },
+  {
+    "empId": 108,
+    "name": "Pooja",
+    "department": "Finance",
+    "salary": 55000,
+    "age": 32,
+    "city": "Pune",
+    "isActive": true
+  },
+  {
+    "empId": 109,
+    "name": "Rohan",
+    "department": "Sales",
+    "salary": 42000,
+    "age": 29,
+    "city": "Mumbai",
+    "isActive": true
+  },
+  {
+    "empId": 110,
+    "name": "Anjali",
+    "department": "IT",
+    "salary": 65000,
+    "age": 31,
+    "city": "Nashik",
+    "isActive": true
+  }
+]
