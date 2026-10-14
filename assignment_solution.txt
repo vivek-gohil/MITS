@@ -1,0 +1,231 @@
+https://github.com/vivek-gohil/MITS
+
+Create the database and collection
+Open MongoDB Shell and perform the following steps:
+1. Click Create Database.
+2. Database Name: TrainingDB
+3. Collection Name: employees
+4. Insert values form GitHub file data.txt
+
+A. Create – Insert Operations
+[1] Insert a new employee named Arjun with empId 111, department IT, salary 48000, age 26, city Mumbai, and isActive true.
+[2] Insert an employee named Meera with empId 112, department HR, salary 38000, age 29, city Pune, and isActive true.
+[3] Insert two new employees into the collection in a single operation.
+
+
+Read – Find Operations
+[1] Display all employee documents.
+[2] Find the employee whose empId is 103.
+[3] Find all employees working in the IT department.
+[4] Find employees whose salary is greater than 50000.
+db.employees.find({
+  salary: { $gt: 50000 }
+})
+[5] Find employees who live in Mumbai.
+[6] Find employees whose age is less than 30.
+[7] Find all inactive employees.
+[8] Find employees whose salary is between 40000 and 60000, inclusive.
+db.employees.find({
+  salary: {
+    $gte: 40000,
+    $lte: 60000
+  }
+})
+[9] Find employees who work in HR or Finance.
+[10] Display only the name and salary of every employee, excluding _id.
+db.employees.find(
+  {},
+  { _id: 0, name: 1, salary: 1 }
+)
+
+
+Update – Modify Operations
+[1] Change Amit's salary to 50000.
+[2] Increase Rahul's salary to 65000.
+[3] Change Priya's city from Pune to Mumbai.
+[4] Set Sneha's isActive field to true.
+[5] Increase the salary of all IT employees by 5000.
+[6] Add a new field called email to employee 101.
+[7] Change the department of employee 107 to Marketing.
+[8] Update the age of employee 110 to 32.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+  B. Read — Find Operations
+
+ 1. Display all employee documents
+
+ 
+db.employees.find({})
+ 
+
+The empty filter `{}` matches every document.
+
+ 2. Find employee whose ID is 103
+
+ 
+db.employees.findOne({ empId: 103 })
+ 
+
+`findOne()` returns a single matching document.
+
+ 3. Find all IT employees
+
+ 
+db.employees.find({ department: "IT" })
+ 
+
+ 4. Find employees earning more than ₹50,000
+
+ 
+db.employees.find({
+  salary: { $gt: 50000 }
+})
+ 
+
+`$gt` means greater than.
+
+ 5. Find employees living in Mumbai
+
+ 
+db.employees.find({ city: "Mumbai" })
+ 
+
+ 6. Find employees younger than 30
+
+ 
+db.employees.find({
+  age: { $lt: 30 }
+})
+ 
+
+`$lt` means less than.
+
+ 7. Find inactive employees
+
+ 
+db.employees.find({ isActive: false })
+ 
+
+ 8. Find employees earning between ₹40,000 and ₹60,000, inclusive
+
+ 
+db.employees.find({
+  salary: {
+    $gte: 40000,
+    $lte: 60000
+  }
+})
+ 
+
+Both boundary values are included. `$gte` means greater than or equal to, and `$lte` means less than or equal to.
+
+ 9. Find employees in HR or Finance
+
+ 
+db.employees.find({
+  department: { $in: ["HR", "Finance"] }
+})
+ 
+
+`$in` matches any value from the specified list.
+
+ 10. Display only employee names and salaries, excluding `_id`
+
+ 
+db.employees.find(
+  {},
+  { _id: 0, name: 1, salary: 1 }
+)
+ 
+
+The second object is the projection:
+
+- `1` includes a field.
+- `0` excludes a field.
+- `_id` is included by default unless explicitly excluded.
+
+  C. Update — Modify Operations
+
+MongoDB updates generally use an update operator such as `$set` or `$inc`.
+
+ 1. Change Amit's salary to ₹50,000
+
+ 
+db.employees.updateOne(
+  { name: "Amit" },
+  { $set: { salary: 50000 } }
+)
+ 
+
+`$set` assigns a specific value to a field.
+
+ 2. Increase Rahul's salary to ₹65,000
+
+ 
+db.employees.updateOne(
+  { name: "Rahul" },
+  { $set: { salary: 65000 } }
+)
+ 
+
+ 3. Change Priya's city to Mumbai
+
+ 
+db.employees.updateOne(
+  { name: "Priya" },
+  { $set: { city: "Mumbai" } }
+)
+ 
+
+ 4. Set Sneha's active status to true
+
+ 
+db.employees.updateOne(
+  { name: "Sneha" },
+  { $set: { isActive: true } }
+)
+ 
+
+ 5. Increase the salary of all IT employees by ₹5,000
+
+ 
+db.employees.updateMany(
+  { department: "IT" },
+  { $inc: { salary: 5000 } }
+)
+ 
+
+Important distinction:
+
+- `$set` changes a field to a specified value.
+- `$inc` increases or decreases a numeric value by the specified amount.
+- `updateOne()` modifies at most one matching document.
+- `updateMany()` modifies every matching document.
+
+ 6. Add an email field to employee 101
+
+ 
+db.employees.updateOne(
+  { empId: 101 },
+  { $set: { email: "amit@example.com" } }
+)
+ 
+
+MongoDB is schema-flexible, so you can add a field without changing a table definition.
+
+ 7. Change employee 107's department to Marketing
+
+ 
+db.employees.updateOne(
+  { empId: 107 },
+  { $set: { department: "Marketing" } }
+)
+ 
+
+ 8. Update employee 110's age to 32
+
+ 
+db.employees.updateOne(
+  { empId: 110 },
+  { $set: { age: 32 } }
+)
