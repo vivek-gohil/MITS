@@ -1,0 +1,54 @@
+MongoDB Tutorial
+1. Start MongoDB Shell open command prompt and type
+	mongosh
+
+2. The mongo shell is a MongoDB client. By default, the mongo shell connects to the test
+The db variable allows you to see the current database:
+	db
+
+3. You can use the shows dbs command to list all the databases on the server:
+	show dbs
+
+4. To switch the current database to another, you use the use <database> command.
+	use bookdb # Database will be created if not exists
+
+5. You can access the books collection from the bookstore database via the db variable like this
+	db.books #table(Collection) will be created
+
+6. CREATE : To add a document to a collection(record), you use the insertOne() method of the collection.
+	db.books.insertOne({
+   		title: "MongoDB Tutorial",
+		published_year: 2020
+	})
+
+7. READ: To select documents in a collection, you use the findOne() method:	
+	db.books.findOne()
+
+8. To format the output, you use the pretty() method like this:
+	db.books.find().pretty()
+
+9. UPDATE: To update a single document, you use the updateOne() method.
+The updateOne() method takes at least two arguments
+ The first argument identifies the document to update.
+ The second argument represents the updates that you want to make.
+The following shows how to update the published_year of the document whose title is "MongoDB Tutorial":
+	db.books.updateOne(
+	{ title: "MongoDB Tutorial"}, 
+	{ $set: { published_year: 2019 }}
+)
+
+10. DELETE: To delete a document from a collection, you use the deleteOne() method. The deleteOne() method takes one argument that identifies the document that you want to delete.
+The following example uses the deleteOne() method to delete a document in the books collection:
+	db.books.deleteOne({title: "MongoDB Tutorial"});
+
+11. To show all collections of the current database, you use the show collections command:
+	
+
+
+
+
+
+
+
+
+

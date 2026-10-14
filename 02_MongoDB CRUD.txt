@@ -1,0 +1,208 @@
+MongoDB CRUD
+This section covers the basics of CRUD operations, including:
+
+	Adding new documents to a collection
+	Selecting documents
+	Updating existing documents
+	Removing documents from a collection
+
+Section 1. Adding new documents to a collection
+insertOne() – show you how insert a single document into a collection.
+1) Insert a document without an _id field example
+	db.books.insertOne({ 
+    		title: 'MongoDB insertOne',
+    		isbn: '0-7617-6154-3'
+	});
+
+2) Insert a document with an _id field example
+	db.books.insertOne({
+   		_id: 1,
+   		title: "Mastering Big Data",
+   		isbn: "0-9270-4986-4"
+	});
+insertMany() – learn how to insert multiple documents into a collection.
+1) Using MongoDB insertMany() method to insert multiple documents without specifying _id fields
+	db.books.insertMany([
+   		{ title:  "NoSQL Distilled", isbn: "0-4696-7030-4"},
+   		{ title:  "NoSQL in 7 Days", isbn: "0-4086-6859-8"},
+   		{ title:  "NoSQL Database", isbn: "0-2504-6932-4"},
+	]);
+2) Using MongoDB insertMany() method to insert multiple documents with _id fields
+	db.books.insertMany([
+   		{ _id: 2, title:  "SQL Basics", isbn: "0-7925-6962-8"},
+   		{ _id: 3, title:  "SQL Advanced", isbn: "0-1184-7778-1"}
+	]);
+3) Unordered insert example
+	db.books.insertMany([
+		{ _id: 3, title:  "SQL Performance Tuning", isbn: "0-6799-2974-6"},
+   		{ _id: 3, title:  "SQL Trees", isbn: "0-6998-1556-8"},
+   		{ _id: 4, title:  "SQL Graph", isbn: "0-6426-4996-0"},
+   		{ _id: 5, title:  "NoSQL Pros", isbn: "0-9602-9886-X"}
+	], { ordered: false });
+
+Section 2. Selecting documents
+findOne() – show you how to query a single document.
+We’ll use the following products collection for the demonstration:
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+ ])
+1) Using MongoDB findOne() method with zero argument
+The following example uses the findOne() method to select the first document from the products collection:	
+	db.products.findOne()
+
+2) Using MongoDB findOne() method with a filter
+The following statement uses the findOne() method to find the document whose _id is 2.
+	db.products.findOne({_id:2})
+
+3) Using MongoDB findOne() method to select some fields
+The following example uses the findOne() method to find the document with _id 5. And it returns only the _id and name fields of the matching document:
+	db.products.findOne({_id: 5}, {name: 1})
+
+
+find() – learn how to query documents from a collection.
+We’ll use the following books collection for the demonstration:
+db.books.insertMany([
+	{ "_id" : 1, "title" : "Unlocking Android", "isbn" : "1933988673", "categories" : [ "Open Source", "Mobile" ] },
+	{ "_id" : 2, "title" : "Android in Action, Second Edition", "isbn" : "1935182722", "categories" : [ "Java" ] },
+	{ "_id" : 3, "title" : "Specification by Example", "isbn" : "1617290084", "categories" : [ "Software Engineering" ] },
+	{ "_id" : 4, "title" : "Flex 3 in Action", "isbn" : "1933988746", "categories" : [ "Internet" ] },
+	{ "_id" : 5, "title" : "Flex 4 in Action", "isbn" : "1935182420", "categories" : [ "Internet" ] },
+	{ "_id" : 6, "title" : "Collective Intelligence in Action", "isbn" : "1933988312", "categories" : [ "Internet" ] },
+	{ "_id" : 7, "title" : "Zend Framework in Action", "isbn" : "1933988320", "categories" : [ "Web Development" ] },
+	{ "_id" : 8, "title" : "Flex on Java", "isbn" : "1933988797", "categories" : [ "Internet" ] },
+	{ "_id" : 9, "title" : "Griffon in Action", "isbn" : "1935182234", "categories" : [ "Java" ] },
+	{ "_id" : 10, "title" : "OSGi in Depth", "isbn" : "193518217X", "categories" : [ "Java" ] },
+	{ "_id" : 11, "title" : "Flexible Rails", "isbn" : "1933988509", "categories" : [ "Web Development" ] },
+	{ "_id" : 13, "title" : "Hello! Flex 4", "isbn" : "1933988762", "categories" : [ "Internet" ] },
+	{ "_id" : 14, "title" : "Coffeehouse", "isbn" : "1884777384", "categories" : [ "Miscellaneous" ] },
+	{ "_id" : 15, "title" : "Team Foundation Server 2008 in Action", "isbn" : "1933988592", "categories" : [ "Microsoft .NET" ] },
+	{ "_id" : 16, "title" : "Brownfield Application Development in .NET", "isbn" : "1933988711", "categories" : [ "Microsoft" ] },
+	{ "_id" : 17, "title" : "MongoDB in Action", "isbn" : "1935182870", "categories" : [ "Next Generation Databases" ] },
+	{ "_id" : 18, "title" : "Distributed Application Development with PowerBuilder 6.0", "isbn" : "1884777686", "categories" : [ "PowerBuilder" ] },
+	{ "_id" : 19, "title" : "Jaguar Development with PowerBuilder 7", "isbn" : "1884777864", "categories" : [ "PowerBuilder", "Client-Server" ] },
+	{ "_id" : 20, "title" : "Taming Jaguar", "isbn" : "1884777686", "categories" : [ "PowerBuilder" ] },
+	{ "_id" : 21, "title" : "3D User Interfaces with Java 3D", "isbn" : "1884777902", "categories" : [ "Java", "Computer Graphics" ] },
+	{ "_id" : 22, "title" : "Hibernate in Action", "isbn" : "193239415X", "categories" : [ "Java" ] },
+	{ "_id" : 23, "title" : "Hibernate in Action (Chinese Edition)", "categories" : [ "Java" ] },
+	{ "_id" : 24, "title" : "Java Persistence with Hibernate", "isbn" : "1932394885", "categories" : [ "Java" ] },
+	{ "_id" : 25, "title" : "JSTL in Action", "isbn" : "1930110529", "categories" : [ "Internet" ] },
+	{ "_id" : 26, "title" : "iBATIS in Action", "isbn" : "1932394826", "categories" : [ "Web Development" ] },
+	{ "_id" : 27, "title" : "Designing Hard Software", "isbn" : "133046192", "categories" : [ "Object-Oriented Programming", "S" ] },
+	{ "_id" : 28, "title" : "Hibernate Search in Action", "isbn" : "1933988649", "categories" : [ "Java" ] },
+	{ "_id" : 29, "title" : "jQuery in Action", "isbn" : "1933988355", "categories" : [ "Web Development" ] },
+	{ "_id" : 30, "title" : "jQuery in Action, Second Edition", "isbn" : "1935182323", "categories" : [ "Java" ] }
+]);
+
+1) Using MongoDB find() method to retrieve all documents from a collection
+The following example uses the find() method with no parameters to return all documents from the books collection:
+	db.books.find()
+
+2) Using MongoDB find() method to search for a specific document
+The following example uses the find() method to search for the document with id 10:
+Projection – guide you on how to specify the fields to return in the matching document.
+	db.books.find({_id: 10})
+
+3) Using MongoDB find() method to return selected fields
+The following example uses the find() method to search for documents whose category is Java. 
+It returns the fields _id, title and isbn:
+	db.books.find({ categories: 'Java'}, { title: 1,isbn: 1})
+
+Section 3. Updating documents
+updateOne() – show you how to update a single document that satisfies a condition.
+We’ll use the following products collection:
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+ ])
+
+1) Using the MongoDB updateOne() method to update a single document
+The following example uses the updateOne() method to update the price of the document with _id: 1:
+	db.products.updateOne({
+	    _id: 1
+	}, {
+	    $set: {
+	        price: 899
+	    }
+	})
+To verify the update, you can use the findOne() method to retrieve the document _id: 1 as follows:
+	db.products.findOne({ _id: 1 }, { name: 1, price: 1 })
+
+2) Using the MongoDB updateOne() method to update the first matching document
+The following query selects the documents from the products collection in which the value of the price field is 899:
+	db.products.find({ price: 899 }, { name: 1, price: 1 })
+
+The following example uses the updateOne() method to update the first matching document where the price field is 899:
+	db.products.updateOne({ price: 899 }, { $set: { price: null } })
+If you query the document with _id: 1, you’ll see that its price field is updated:
+	db.products.find({ _id: 1}, { name: 1, price: 1 })
+
+updateMany() – learn how to update multiple documents that match a condition.
+We’ll use the following products collection:
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+ ])
+
+1) Using the MongoDB updateMany() method to update multiple documents
+The following example uses the updateMany() method to update the documents where the value of the price field is 899
+	db.products.updateMany(
+	    {  price: 899}, 
+	    { $set: {  price: 895 }}
+	)
+
+To check the update, you can use the find() method to select the documents where the value of the price field is 895 as follows:
+	db.products.find({
+	    price: 895
+	}, {
+	    name: 1,
+	    price: 1
+	})
+
+Section 4. Deleting documents
+deleteOne() – delete a single document from a collection.
+We’ll use the following products collection:
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+ ])
+
+1) Using the deleteOne() method to delete a single document
+The following example uses the deleteOne() method to delete a document with the _id is 1 from the products collection:
+	db.products.deleteOne({ _id: 1 })	
+
+2) Using the deleteOne() method to delete the first document from a collection
+The following query uses the deleteOne() method to remove the first document returned from the products collection:
+	db.products.deleteOne({})
+
+
+deleteMany() – delete all documents that match a condition from a collection.
+We’ll use the following products collection.
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+ ])
+
+1) Using the deleteMany() method to delete multiple documents
+The following example uses the deleteMany() method to delete all documents where the value in the price field is 899:
+	db.products.deleteMany({ price: 899 })
+
+2) Using the deleteMany() method to delete all documents 
+The following query uses the deleteMany() method to delete all documents from the products collection
+	db.products.deleteMany({})
+
