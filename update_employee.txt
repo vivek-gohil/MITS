@@ -1,0 +1,46 @@
+
+import org.bson.Document;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.combine;
+
+import java.util.Scanner;
+import java.util.Set;
+
+public class UpdateEmployeeMain {
+
+    public static void main(String[] args) {
+        MongoClient client = MongoClients.create("mongodb://localhost:27017");
+        System.out.println("Connected to MongoDB Server");
+
+        MongoDatabase database = client.getDatabase("mitsdb");
+        System.out.println("Connected to Mongo Database : mitsdb");
+
+        MongoCollection<Document> collection = database.getCollection("employees");
+        System.out.println("Connected to employees table for CRUD Operations");
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter employeeId : ");
+        int employeeId = scanner.nextInt();
+
+        System.out.println("Enter New Name");
+        String name = scanner.next();
+
+        System.out.println("Enter New Salary");
+        double salary = scanner.nextDouble();
+
+        UpdateResult result = collection.updateOne(com.mongodb.client.model.Filters.eq("empId", employeeId),
+                com.mongodb.client.model.Updates.combine(set("name", name), set("salary", salary)));
+
+        long count = result.getMatchedCount();
+
+        System.out.println("Updated Rows : " + count);
+    }
+}
